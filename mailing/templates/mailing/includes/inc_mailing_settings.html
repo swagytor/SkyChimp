@@ -1,0 +1,61 @@
+<div class="card">
+    <div class="card-header">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            Осталось:{{ object.end_date|timeuntil:time_now }}
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="pr-2">
+            <tr>
+                <td>Сообщение:</td>
+                <td>{{ object.message.title }}</td>
+            </tr>
+            <tr>
+                <td>Статус:</td>
+                <td>
+                    {% if object.status == object.STATUS_CREATED %}
+                        <div class="text-warning">
+                    {% elif object.status == object.STATUS_LAUNCHED %}
+                        <div class="text-success">
+                    {% else %}
+                        <div class="text-danger">
+                    {% endif %}
+                    {{ object.get_status_display }}
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td>Клиенты:</td>
+                <td>{% for client in object.clients.all %}
+                    {{ client.first_name }} {{ client.last_name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>Период работы:</td>
+                <td>{{ object.start_date }} - {{ object.end_date }}
+                </td>
+            </tr>
+            <tr>
+                <td>Периодичность:</td>
+                <td>{{ object.get_frequency_display }}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="card-footer">
+        {% if user.is_staff or user.is_superuser %}
+            {% if object.status == 'launched' %}
+                <a href="{% url 'mailing:switch_status' object.pk %}" class="btn btn-dark">Отключить</a>
+            {% elif object.status == 'complete' %}
+                <a href="{% url 'mailing:switch_status' object.pk %}" class="btn btn-success">Включить</a>
+            {% endif %}
+
+        {% endif %}
+        {% if not user.is_staff %}
+            <a href="{% url 'mailing:update' object.pk %}" class="btn btn-primary">Изменить</a>
+            <a href="{% url 'mailing:delete' object.pk %}" class="btn btn-danger">Удалить</a>
+        {% endif %}
+    </div>
+</div>

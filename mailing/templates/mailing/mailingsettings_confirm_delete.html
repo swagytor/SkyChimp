@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <form method="post">
+                    <div class="card ">
+                        <div class="card-header">Удаление рассылки {{ object.message.title }}</div>
+                        <div class="card-body">
+                            Вы уверены, что хотите удалить рассылку {{ object.message.title }}?
+                            {% csrf_token %}
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-danger form-control my-1 py-2">Удалить рассылку</button>
+                            <a href="javascript:history.back()" class="btn btn-success form-control my-1 py-2">Отменить
+                                удаление</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
