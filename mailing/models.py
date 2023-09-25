@@ -9,6 +9,7 @@ NULLABLE = {
 
 # Create your models here.
 class Client(models.Model):
+    """Модель клиента"""
     email = models.EmailField(max_length=150, verbose_name='Почта', unique=True)
     first_name = models.CharField(max_length=50, verbose_name='Имя')
     last_name = models.CharField(max_length=50, verbose_name='Фамилия')
@@ -24,6 +25,7 @@ class Client(models.Model):
 
 
 class Message(models.Model):
+    """Модель сообщения"""
     title = models.CharField(max_length=200, verbose_name='Тема письма')
     text = models.TextField(verbose_name='Текст письма')
 
@@ -36,6 +38,7 @@ class Message(models.Model):
 
 
 class MailingSettings(models.Model):
+    """Модель рассылки"""
     STATUS_CREATED = 'created'
     STATUS_LAUNCHED = 'launched'
     STATUS_COMPLETE = 'complete'
@@ -72,6 +75,7 @@ class MailingSettings(models.Model):
 
 
 class MailingLog(models.Model):
+    """Модель лога сообщения"""
     STATUS_SUCCESS = 'OK'
     STATUS_FAILED = 'Failed'
 
