@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+
+{% block content %}
+    <div class="container">
+        <a href="{% url 'blog:list' %}" class="text-primary text-decoration-none"><-- Назад</a>
+        {% if user.is_staff %}
+        <a href="{% url 'blog:update' object.pk %}" class="btn btn-primary">Изменить</a>
+        <a href="{% url 'blog:delete' object.pk %}" class="btn btn-danger">Удалить</a>
+        {% endif %}
+        <div class="row">
+            <h3>{{ object.title }}</h3>
+
+            <div class="col-6">
+                <p>{{ object.text }}</p>
+            </div>
+            <div class="col-6">
+
+                <img src="{{ object.image|mymedia }}" alt="Изображение блога" width="80%">
+            </div>
+        </div>
+    </div>
+{% endblock %}
