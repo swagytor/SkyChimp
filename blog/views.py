@@ -54,7 +54,7 @@ class BlogUpdateView(PermissionRequiredMixin, UpdateView):
 
 class BlogDeleteView(PermissionRequiredMixin, DeleteView):
     """
-    Контроллер для создания объекта Blog
+    Контроллер для Удаления объекта Blog
     """
     model = Blog
     permission_required = 'blog.delete_blog'

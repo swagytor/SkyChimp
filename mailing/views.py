@@ -12,6 +12,8 @@ from mailing.models import MailingSettings, Client, Message
 
 # Mixins
 class OnlyForOwnerOrSuperuserMixin:
+    """Миксин на проверку доступа к чужой информации"""
+
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         if self.object.owner != self.request.user and not self.request.user.is_superuser:
@@ -35,6 +37,7 @@ def index(request):
 
 @login_required
 def switch_mailing_status(request, pk):
+    """Контроллер для смены статуса рассылки"""
     mailing = MailingSettings.objects.get(pk=pk)
     if mailing.status == MailingSettings.STATUS_LAUNCHED:
         mailing.status = MailingSettings.STATUS_COMPLETE
@@ -47,17 +50,20 @@ def switch_mailing_status(request, pk):
 # Creating Controllers
 
 class MailingSettingsCreateView(LoginRequiredMixin, CreateView):
+    """Контроллер для создания настроек рассылки"""
     model = MailingSettings
     permission_required = 'mailing.add_mailing_settings'
     form_class = MailingForm
     success_url = reverse_lazy('mailing:list')
 
     def get_form_kwargs(self):
+        """Метод для получения пользователя перед созданием форм"""
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
 
     def form_valid(self, form):
+        """Метод для проверки статуса сразу после создания"""
         self.object = form.save()
         self.object.owner = self.request.user
 
@@ -68,13 +74,14 @@ class MailingSettingsCreateView(LoginRequiredMixin, CreateView):
 
 
 class ClientCreateView(LoginRequiredMixin, CreateView):
+    """Контроллер для создания клиентов"""
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mailing:client_list')
     permission_required = 'mailing.add_client'
 
-
     def form_valid(self, form):
+        """Метод для определения пользователя после создания клиента"""
         self.object = form.save()
         self.object.owner = self.request.user
 
@@ -82,6 +89,7 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
 
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
+    """Контроллер для создания сообщения"""
     model = Message
     success_url = reverse_lazy('mailing:list')
     form_class = MessageForm
@@ -90,6 +98,7 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
 
 # Reading Controllers
 class MailingSettingsListView(LoginRequiredMixin, ListView):
+    """Контроллер для просмотра рассылок"""
     model = MailingSettings
     permission_required = 'mailing.view_mailing_settings'
     ordering = ('start_date',)
@@ -110,6 +119,7 @@ class MailingSettingsListView(LoginRequiredMixin, ListView):
 
 
 class ClientListView(LoginRequiredMixin, ListView):
+    """Контроллер для просмотра клиентов"""
     model = Client
     permission_required = 'mailing.view_client'
 
@@ -127,6 +137,7 @@ class ClientListView(LoginRequiredMixin, ListView):
 # Updating Controllers
 
 class MailingSettingsUpdateView(LoginRequiredMixin, OnlyForOwnerOrSuperuserMixin, UpdateView):
+    """Контроллер для изменения рассылок"""
     model = MailingSettings
     permission_required = 'mailing.change_mailing_settings'
     form_class = MailingForm
@@ -139,6 +150,7 @@ class MailingSettingsUpdateView(LoginRequiredMixin, OnlyForOwnerOrSuperuserMixin
 
 
 class ClientUpdateView(LoginRequiredMixin, OnlyForOwnerOrSuperuserMixin, UpdateView):
+    """Контроллер для изменения клиентов"""
     model = Client
     permission_required = 'mailing.change_client'
     form_class = ClientForm
@@ -149,12 +161,14 @@ class ClientUpdateView(LoginRequiredMixin, OnlyForOwnerOrSuperuserMixin, UpdateV
 
 
 class MailingSettingsDeleteView(LoginRequiredMixin, OnlyForOwnerOrSuperuserMixin, DeleteView):
+    """Контроллер для удаления рассылок"""
     model = MailingSettings
     permission_required = 'mailing.delete_mailing_settings'
     success_url = reverse_lazy('mailing:list')
 
 
 class ClientDeleteView(LoginRequiredMixin, OnlyForOwnerOrSuperuserMixin, DeleteView):
+    """Контроллер для удаления клиентов"""
     model = Client
     permission_required = 'mailing.delete_client'
     success_url = reverse_lazy('mailing:client_list')

@@ -24,6 +24,7 @@ class MailingForm(StyleFormMixin, forms.ModelForm):
         exclude = ('status', 'owner')
 
     def __init__(self, *args, **kwargs):
+        """Метод получения собственных клиентов"""
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if user.is_superuser:
@@ -34,6 +35,7 @@ class MailingForm(StyleFormMixin, forms.ModelForm):
             self.fields['clients'].queryset = Client.objects.none()
 
     def clean(self):
+        """Clean-метод на проверку вводимых дат"""
         cleaned_data = super().clean()
 
         start_date = cleaned_data['start_date']
@@ -51,6 +53,7 @@ class ClientForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Client
         exclude = ('owner',)
+
 
 class MessageForm(StyleFormMixin, forms.ModelForm):
     class Meta:
