@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .center-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .text-content {
+        text-align: center;
+    }
+
+</style>
+
+<div class="center-container bg-success-subtle">
+    <div class="text-content">
+        <h2>Внимание!</h2>
+        <p>Вам на почту была отправлена ссылка для верификации.</p>
+        <p>Перейдите по ней для подтверждения аккаунта.</p>
+        <a href="{% url 'mailing:homepage' %}" class="btn btn-primary confirm-update mt-3">Вернуться на главную</a>
+    </div>
+</div>
+
+{% endblock %}
