@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            {% if object %}
+                                <button type="submit" class="btn btn-success form-control my-1 px-2">Принять изменения</button>
+                            {% else %}
+                                <button type="submit" class="btn btn-success form-control my-1 px-2">Создать</button>
+                            {% endif %}
+                            <a href="{% url 'mailing:client_list' %}" class="btn btn-danger form-control my-1 px-2">Вернуться назад</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
