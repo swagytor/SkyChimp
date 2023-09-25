@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+
+{% block content %}
+    <div class="container">
+    <div class="row">
+        <h3 class="py-3 text-center">Информация о пользователе</h3>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    {{ object }}
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li>Имя: {{ object.first_name }}</li>
+                        <li>Фамилия: {{ object.last_name }}</li>
+                        <li>Статус:
+                            {% if object.is_superuser %}
+                                <text class="text-success">Админ</text>
+                            {% elif object.is_staff %}
+                                <text class="text-primary">Менеджер</text>
+                            {% else %}
+                                <text class="text-secondary">Пользователь</text>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <img src="{{ object.avatar|get_avatar }}" alt="Аватар пользователя" width="80%">
+        </div>
+    </div>
+    </div>
+{% endblock %}

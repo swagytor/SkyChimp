@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <header class="text-center pb-3"><h2>Список пользователей</h2></header>
+    <div class="row">
+        {% for object in object_list %}
+                    {% include 'users/includes/inc_users.html' %}
+        {% endfor %}
+    </div>
+{% endblock %}
