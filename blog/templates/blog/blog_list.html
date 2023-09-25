@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load my_tags %}
+{% block content %}
+    <header class="text-center"><h2>Блоги Skystore</h2></header>
+    <div class="row">
+        {% if user.is_staff %}
+            <div class="col-12 text-center">
+                <a href="{% url 'blog:create' %}" class="btn btn-lg btn-success w-25 mt-4">Создать блог</a>
+            </div>
+        {% endif %}
+        {% for object in object_list %}
+            <div class="col-6 pt-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-header text-center m-2">
+                            <h4>{{ object.title }}</h4>
+                        </div>
+                        <div class="card-img text-center">
+                            <img src="{{ object.image|mymedia }}" alt="Изображение блога" width="50%">
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row mt-3">
+                            <div class="col-8">
+                                <a href="{% url 'blog:detail' object.pk %}"
+                                   class="btn form-control btn-primary">Читать
+                                    подробнее</a>
+                            </div>
+                            <div class="col-4">
+                                <small class="d-block mr-3  text-right text-muted">количество
+                                    просмотров: {{ object.views }}</small>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
