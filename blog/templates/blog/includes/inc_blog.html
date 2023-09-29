@@ -1,0 +1,28 @@
+{% load my_tags %}
+<div class="col-4 pt-3">
+    <div class="card h-100">
+        <div class="card-body">
+            <div class="card-header text-center m-2">
+                <h4>{{ blog_object.title }}</h4>
+            </div>
+            <div class="card-img text-center">
+                <img src="{{ blog_object.image|mymedia }}" alt="Изображение блога" width="50%">
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <div class="row mt-3">
+                <div class="col-8">
+                    <a href="{% url 'blog:detail' blog_object.pk %}"
+                       class="btn form-control btn-primary">Читать
+                        подробнее</a>
+                </div>
+                <div class="col-4">
+                    <small class="d-block mr-3  text-right text-muted">количество
+                        просмотров: {{ blog_object.views }}</small>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

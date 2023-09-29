@@ -64,7 +64,6 @@ class LoginView(BaseLoginView):
     """Контроллер для авторизации"""
     template_name = 'users/login.html'
     form_class = UserAuthForm
-    success_url = reverse_lazy('mailing:list')
 
 
 class LogoutView(BaseLogoutView):
