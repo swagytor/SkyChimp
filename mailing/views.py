@@ -1,11 +1,14 @@
+from random import shuffle, sample
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import render, redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import ListView, DetailView, DeleteView, UpdateView, CreateView
+from django.views.generic import ListView, DeleteView, UpdateView, CreateView
 
+from blog.models import Blog
 from mailing.forms import MailingForm, ClientForm, MessageForm
 from mailing.models import MailingSettings, Client, Message
 
@@ -26,10 +29,17 @@ class OnlyForOwnerOrSuperuserMixin:
 def index(request):
     object_list = MailingSettings.objects.all()
     client_list = Client.objects.distinct()
+    blog_list = list(Blog.objects.all())
+
+    try:
+        blog_list = sample(blog_list, 3)
+    except ValueError:
+        blog_list = sample(blog_list, len(blog_list))
 
     context = {'object_list': object_list,
                'active_mailings': object_list.filter(status=MailingSettings.STATUS_LAUNCHED),
                'clients_list': client_list,
+               'blog_list': blog_list
                }
 
     return render(request, 'mailing/homepage.html', context)
@@ -118,7 +128,7 @@ class MailingSettingsListView(LoginRequiredMixin, ListView):
         return context_data
 
 
-class ClientListView(LoginRequiredMixin, ListView):
+class ClientListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     """Контроллер для просмотра клиентов"""
     model = Client
     permission_required = 'mailing.view_client'

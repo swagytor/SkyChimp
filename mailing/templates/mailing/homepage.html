@@ -41,5 +41,11 @@
                 </p>
             </div>
         </div>
+    <div class="row">
+        <header class="text-center">Блог</header>
+        {% for blog_object in blog_list %}
+                {% include 'blog/includes/inc_blog.html' %}
+        {% endfor %}
+    </div>
     </section>
 {% endblock %}
